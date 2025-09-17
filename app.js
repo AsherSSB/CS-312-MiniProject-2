@@ -4,6 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const fuse = require('fuse.js');
 const homeRoutes = require('./app/routes/homeRoutes');
+const apiRoutes = require('./app/routes/api');
 const steamJsonInit = require('./app/lib/steamJsonInit');
 
 // app config
@@ -17,6 +18,7 @@ app.use(express.urlencoded({ extended: true }));  // auto parse form data into o
 app.use(express.json());  // automatically parse json request body into object
 
 app.use('/', homeRoutes);
+app.use('/api', apiRoutes);
 
 // on startup create games json 
 steamJsonInit();
