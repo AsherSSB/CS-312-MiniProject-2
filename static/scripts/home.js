@@ -1,5 +1,6 @@
 const searchBar = document.querySelector('#app-search');
-const queryInterval = 4000; // timeout time of 1 second
+const appOptions = document.querySelector('#app-options');
+const queryInterval = 2000; // timeout time of 1 second
 let queryTimer; // for timeout on query search
 
 searchBar.addEventListener('keyup', async (e) => {
@@ -10,31 +11,19 @@ searchBar.addEventListener('keyup', async (e) => {
 });
 
 async function addOptions(data) {
-	const oldDatalist = document.querySelector('#query-results');
-
-	if (oldDatalist) {
-		oldDatalist.remove();
-	}
-
-	const datalist = document.createElement('datalist');
-	datalist.id = 'query-results';
-
+    appOptions.replaceChildren();
 	for (app of data) {
-		console.log(app);
-		const option = document.createElement('option');
+		const option = document.createElement('button');
 		option.value = app.item.appid;
 		option.textContent = app.item.name;
-		datalist.appendChild(option);
+        option.classList.add('btn', 'btn-light', 'text-start');
+		appOptions.appendChild(option);
 
 		option.addEventListener('click', async (e) => {
 			searchBar.value = app.item.name;
 			console.log(`sending ${app.item.name}`);
 		});
 	}
-	
-	searchBar.parentElement.insertAdjacentHtml('beforeend', datalist);
-
-	console.log(appList);
 }
 
 async function sendQuery(query) {
