@@ -6,7 +6,6 @@ let queryTimer; // for timeout on query search
 
 searchBar.addEventListener('keyup', async (e) => {
 	const query = searchBar.value;
-	console.log('setting timer');
 	clearTimeout(queryTimer);
 	queryTimer = setTimeout(sendQuery, queryInterval, query);	
     spinner.classList.remove('d-none');
@@ -32,7 +31,6 @@ async function addOptions(data) {
 }
 
 async function sendQuery(query) {
-	console.log('sending query');
 	const response = await fetch(`/api/find/${query}`);
 
 	if (!response.ok) {

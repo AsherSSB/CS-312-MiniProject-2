@@ -5,10 +5,8 @@ async function getFunnyReviews(appid) {
 	let queryResult = await fetchAppReviews(appid, cursor);
 
 	while (queryResult.reviews !== undefined && queryResult.reviews.length != 0 && reviews.length < reviewCount) {
-        console.log(queryResult.reviews);
 		reviews = reviews.concat(queryResult.reviews);
 		cursor = queryResult.cursor;
-		console.log(cursor);
 		queryResult = await fetchAppReviews(appid, cursor);
 	}
 	
@@ -18,7 +16,7 @@ async function getFunnyReviews(appid) {
 
 async function fetchAppReviews(appid, cursor) {
 	cursor = encodeURIComponent(cursor);
-	const query = `https://store.steampowered.com/appreviews/${appid}?json=1&filter=funny&language=english&cursor=${cursor}&num_per_page=100`
+	const query = `https://store.steampowered.com/appreviews/${appid}?json=1&filter=funny&language=english&cursor=${cursor}&num_per_page=100&filter_offtopic_activity=0&purchase_type=all`
 
 	const data = await fetch(query)
 	.then(res => {

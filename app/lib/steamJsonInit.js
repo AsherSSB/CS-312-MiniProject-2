@@ -4,13 +4,13 @@ require('dotenv').config();
 async function initializeSteamJson() {
     let result = await checkFileExists('./steamapps.json');
     if (!result) {
+        console.log('Initializing \'steamapps.json\'...');
         await createNewSteamJson();
     } 
 }
 
 async function createNewSteamJson() {
     const query = `https://api.steampowered.com/IStoreService/GetAppList/v1/?key=${process.env.STEAM_API_KEY}&include_games=true&include_dlc=false&include_software=false&include_videos=false&include_hardware=false&max_results=50000`;
-    console.log('fetching');
     let response = await fetch(query);
     let games = [];
 
@@ -26,7 +26,6 @@ async function createNewSteamJson() {
 
     while(data.response.have_more_results) {
         const followupQuery = query.concat(`&last_appid=${data.response.last_appid}`);
-        console.log('fetching');
         response = await fetch(followupQuery);       
         data = await response.json();
         games = games.concat(data.response.apps);
