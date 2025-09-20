@@ -1,12 +1,28 @@
 #search-container {
     margin: auto;
     margin-top: 25vh;
-    width: 30%;
+    width: 50%;
 }
 #loading-spinner {
     position: absolute;
-    right: 36%;
+    right: 34%;
 }
 #app-options {
-    width: 30%;
+    width: 50%;
+}
+.btn:hover {
+    box-shadow: inset 0 0 0 2px black; /* Evil fake border-box hack */
+}
+
+@media only screen and (max-width: 800px) {
+    #loading-spinner {
+        right: 50%;
+    }
+    #search-container {
+        width: 90%;
+    }
+    #app-options {
+        width: 90%;
+    }
+
 }

@@ -1,3 +1,5 @@
 .env
 *.out
 *.test
+steamapps.json
+topapps.json

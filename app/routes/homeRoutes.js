@@ -1,6 +1,13 @@
 const express = require('express');
+const fs = require('fs').promises;
 const fetchReviews = require('../lib/steamReviewFetcher');
 const router = express.Router();
+
+async function getAppName(appid) {
+    const steamAppList = JSON.parse(await fs.readFile('./steamapps.json', 'utf8'));
+    const foundApp = steamAppList.find((currentApp) => currentApp.appid == appid);
+    return foundApp.name;
+}
 
 // steam has its own mini markup language that needs to be converted to html
 function steamToHtml(text) {
@@ -32,9 +39,17 @@ router.get('/review/:appid', async (req, res) => {
     const appid = req.params.appid;
     const appName = req.query.name;
     const reviews = await fetchReviews(appid);
-    console.log(reviews.slice().reverse());
     reviews[0].review = steamToHtml(reviews[0].review);
     res.render('review.ejs', {review: reviews[0], name: appName});
+});
+
+router.get('/feeling-lucky', async (req, res) => {
+    const appidList = JSON.parse(await fs.readFile('./topapps.json', 'utf8'));
+    const randomIndex = Math.floor(Math.random() * appidList.length);
+    const appid = appidList[randomIndex];
+    console.log(appid);
+    const appName = await getAppName(appid);
+    res.redirect(`/review/${appid}?name=${appName}`); 
 });
 
 module.exports = router;
