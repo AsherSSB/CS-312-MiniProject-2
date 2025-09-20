@@ -4,7 +4,8 @@ async function getFunnyReviews(appid) {
 	const reviewCount = 100 // reviews to fetch from top
 	let queryResult = await fetchAppReviews(appid, cursor);
 
-	while (queryResult.reviews && reviews.length < reviewCount) {
+	while (queryResult.reviews !== undefined && queryResult.reviews.length != 0 && reviews.length < reviewCount) {
+        console.log(queryResult.reviews);
 		reviews = reviews.concat(queryResult.reviews);
 		cursor = queryResult.cursor;
 		console.log(cursor);

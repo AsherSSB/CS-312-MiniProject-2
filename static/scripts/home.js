@@ -12,17 +12,20 @@ searchBar.addEventListener('keyup', async (e) => {
 
 async function addOptions(data) {
     appOptions.replaceChildren();
-	for (app of data) {
+	for (const app of data) {
 		const option = document.createElement('button');
 		option.value = app.item.appid;
 		option.textContent = app.item.name;
         option.classList.add('btn', 'btn-light', 'text-start');
-		appOptions.appendChild(option);
 
 		option.addEventListener('click', async (e) => {
+            e.preventDefault();
 			searchBar.value = app.item.name;
-			console.log(`sending ${app.item.name}`);
+            const appName = encodeURIComponent(app.item.name);
+            window.location.href = `/review/${app.item.appid}?name=${appName}`
 		});
+
+		appOptions.appendChild(option);
 	}
 }
 
