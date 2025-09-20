@@ -1,6 +1,7 @@
 const searchBar = document.querySelector('#app-search');
 const appOptions = document.querySelector('#app-options');
-const queryInterval = 2000; // timeout time of 1 second
+const spinner = document.querySelector('#loading-spinner');
+const queryInterval = 1000; // timeout time of 1 second
 let queryTimer; // for timeout on query search
 
 searchBar.addEventListener('keyup', async (e) => {
@@ -8,6 +9,7 @@ searchBar.addEventListener('keyup', async (e) => {
 	console.log('setting timer');
 	clearTimeout(queryTimer);
 	queryTimer = setTimeout(sendQuery, queryInterval, query);	
+    spinner.classList.remove('d-none');
 });
 
 async function addOptions(data) {
@@ -37,6 +39,6 @@ async function sendQuery(query) {
 		console.log(`Error fetching query ${response.status}`);
 		return [];
 	}
-
+    spinner.classList.add('d-none')
 	addOptions(await response.json());
 }

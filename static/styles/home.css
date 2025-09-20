@@ -1,3 +1,12 @@
 #search-container {
+    margin: auto;
     margin-top: 30vh;
+    width: 30%;
+}
+#loading-spinner {
+    position: absolute;
+    right: 36%;
+}
+#app-options {
+    width: 30%;
 }
