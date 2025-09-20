@@ -1,6 +1,7 @@
-
-async function getFunnyReviews(appid, reviews=[], cursor='*') {
-	const reviewCount = 200 // reviews to fetch from top
+async function getFunnyReviews(appid) {
+    let reviews = [];
+    let cursor = '*';
+	const reviewCount = 100 // reviews to fetch from top
 	let queryResult = await fetchAppReviews(appid, cursor);
 
 	while (queryResult.reviews && reviews.length < reviewCount) {
@@ -18,7 +19,7 @@ async function fetchAppReviews(appid, cursor) {
 	cursor = encodeURIComponent(cursor);
 	const query = `https://store.steampowered.com/appreviews/${appid}?json=1&filter=funny&language=english&cursor=${cursor}&num_per_page=100`
 
-	const data = await fetch(query);
+	const data = await fetch(query)
 	.then(res => {
 		if (!res.ok) {
 			throw new Error("unable to get app reviews");
@@ -35,3 +36,5 @@ async function fetchAppReviews(appid, cursor) {
 	
 	return data;
 }
+
+module.exports = getFunnyReviews;
