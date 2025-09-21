@@ -32,15 +32,20 @@ function steamToHtml(text) {
 }
 
 router.get('/', (req, res) => {
+    req.session.reviewNumber = 0;
     res.render('home.ejs');
 });
 
 router.get('/review/:appid', async (req, res) => {
     const appid = req.params.appid;
     const appName = req.query.name;
+    const reviewQuery = parseInt(req.query['review-index']);
+    const reviewIndex = reviewQuery >= 0 ? reviewQuery : 0;
+
     const reviews = await fetchReviews(appid);
-    reviews[0].review = steamToHtml(reviews[0].review);
-    res.render('review.ejs', {review: reviews[0], name: appName});
+    reviews[reviewIndex].review = steamToHtml(reviews[reviewIndex].review);
+
+    res.render('review.ejs', {review: reviews[reviewIndex], name: appName});
 });
 
 router.get('/feeling-lucky', async (req, res) => {
@@ -49,7 +54,7 @@ router.get('/feeling-lucky', async (req, res) => {
     const appid = appidList[randomIndex];
     console.log(appid);
     const appName = await getAppName(appid);
-    res.redirect(`/review/${appid}?name=${appName}`); 
+    res.redirect(`/review/${appid}?name=${appName}&review-index=0`); 
 });
 
 module.exports = router;

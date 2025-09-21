@@ -1,11 +1,13 @@
 // libraries
 const express = require('express');
+const session = require('express-session');
 const path = require('path');
 const fs = require('fs');
 const fuse = require('fuse.js');
 const homeRoutes = require('./app/routes/homeRoutes');
 const apiRoutes = require('./app/routes/api');
 const steamJsonInit = require('./app/lib/steamJsonInit');
+require('dotenv').config();
 
 // app config
 const app = express();
@@ -16,6 +18,11 @@ app.set('views', path.join(__dirname, 'app/views'));
 app.use(express.static(path.join(__dirname, 'static')));
 app.use(express.urlencoded({ extended: true }));  // auto parse form data into object
 app.use(express.json());  // automatically parse json request body into object
+app.use(session({ // configure session data
+    secret: process.env.SECRET_KEY,
+    resave: false,
+    saveUnitialized: false
+}));
 
 app.use('/', homeRoutes);
 app.use('/api', apiRoutes);
