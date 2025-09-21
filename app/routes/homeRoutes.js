@@ -1,6 +1,7 @@
 const express = require('express');
 const fs = require('fs').promises;
 const fetchReviews = require('../lib/steamReviewFetcher');
+const getUserName = require('../lib/getUserName');
 const router = express.Router();
 
 async function getAppName(appid) {
@@ -43,9 +44,21 @@ router.get('/review/:appid', async (req, res) => {
     const reviewIndex = reviewQuery >= 0 ? reviewQuery : 0;
 
     const reviews = await fetchReviews(appid);
-    reviews[reviewIndex].review = steamToHtml(reviews[reviewIndex].review);
+    const review = reviews[reviewIndex];
+    const author = await getUserName(review.author.steamid);
 
-    res.render('review.ejs', {review: reviews[reviewIndex], name: appName});
+    console.log(review.author.steamid);
+    console.log(author);
+
+    review.review = steamToHtml(review.review);
+    const timePlayed = Math.round(review.author.playtime_forever);
+
+    res.render('review.ejs', {
+        review: review.review,
+        name: appName,
+        timePlayed: timePlayed,
+        author: author
+    });
 });
 
 router.get('/feeling-lucky', async (req, res) => {
