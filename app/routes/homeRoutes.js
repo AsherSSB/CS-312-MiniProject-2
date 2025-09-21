@@ -47,11 +47,8 @@ router.get('/review/:appid', async (req, res) => {
     const review = reviews[reviewIndex];
     const author = await getUserName(review.author.steamid);
 
-    console.log(review.author.steamid);
-    console.log(author);
-
     review.review = steamToHtml(review.review);
-    const timePlayed = Math.round(review.author.playtime_forever);
+    const timePlayed = Math.round(review.author.playtime_forever / 60);
 
     res.render('review.ejs', {
         review: review.review,
@@ -65,7 +62,6 @@ router.get('/feeling-lucky', async (req, res) => {
     const appidList = JSON.parse(await fs.readFile('./topapps.json', 'utf8'));
     const randomIndex = Math.floor(Math.random() * appidList.length);
     const appid = appidList[randomIndex];
-    console.log(appid);
     const appName = await getAppName(appid);
     res.redirect(`/review/${appid}?name=${appName}&review-index=0`); 
 });
