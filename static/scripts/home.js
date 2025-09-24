@@ -8,6 +8,7 @@ searchBar.addEventListener('keyup', async (e) => {
 	const query = searchBar.value;
 	clearTimeout(queryTimer);
 	queryTimer = setTimeout(sendQuery, queryInterval, query);	
+    appOptions.classList.add('d-none');
     spinner.classList.remove('d-none');
 });
 
@@ -37,6 +38,7 @@ async function sendQuery(query) {
 		console.log(`Error fetching query ${response.status}`);
 		return [];
 	}
-    spinner.classList.add('d-none')
+    spinner.classList.add('d-none');
 	addOptions(await response.json());
+    appOptions.classList.remove('d-none');
 }

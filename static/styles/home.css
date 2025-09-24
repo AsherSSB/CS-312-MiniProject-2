@@ -4,8 +4,8 @@
     width: 50%;
 }
 #loading-spinner {
-    position: absolute;
-    right: 34%;
+    width: 10vw;
+    height: 10vw; 
 }
 #app-options {
     width: 50%;
@@ -15,9 +15,6 @@
 }
 
 @media only screen and (max-width: 800px) {
-    #loading-spinner {
-        right: 50%;
-    }
     #search-container {
         width: 90%;
     }

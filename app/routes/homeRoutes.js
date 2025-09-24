@@ -44,6 +44,12 @@ router.get('/review/:appid', async (req, res) => {
     const reviewIndex = reviewQuery >= 0 ? reviewQuery : 0;
 
     const reviews = await fetchReviews(appid);
+
+    if(reviews.length === 0) {
+        console.log('redirecting');
+        return res.redirect(`/review-not-found/${appName}`);
+    }
+
     const review = reviews[reviewIndex];
     const author = await getUserName(review.author.steamid);
 
@@ -64,6 +70,10 @@ router.get('/feeling-lucky', async (req, res) => {
     const appid = appidList[randomIndex];
     const appName = await getAppName(appid);
     res.redirect(`/review/${appid}?name=${appName}&review-index=0`); 
+});
+
+router.get('/review-not-found/:appName', (req, res) => {
+    res.render('review-not-found.ejs', {appName: req.params.appName});
 });
 
 module.exports = router;
